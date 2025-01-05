@@ -4,7 +4,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- vim options
 vim.g.mapleader = ' '			-- make the space key our leader 
-vim.g.localmapleader = '\\'		--
+vim.g.localmapleader = '\\'		-- TODO: learn what this is
 vim.opt.number = true			-- show line numbers
 vim.opt.relativenumber = true		-- show relative line numbers
 vim.opt.splitbelow = true		-- default splits to B instead of U
@@ -15,6 +15,7 @@ vim.opt.virtualedit = "block"		-- when using visual block, use a virtual cursor
 vim.opt.inccommand = "split"		-- this puts the search/replace in a new split
 vim.opt.ignorecase = true		-- when typing commands, ignore case sensitivity
 vim.opt.termguicolors = true		-- basically uses better color support
+vim.opt.clipboard = "unnamedplus"	-- TODO: decide if I want this. Not use to multiple clipboards yet
 
 -- setup lazy and plugins
 require("lazy").setup({
@@ -30,7 +31,9 @@ require("lazy").setup({
 	    dependencies = { "nvim-tree/nvim-web-devicons" },
 	    config = function() require("lualine").setup() end,
 	},
-	{ 
+	{
+	    -- TODO: learn the differences this between what the theme does by deafult and/or an LSP.
+	    -- I would assume having this and an LSP converting both to AST is excessive.
 	    "nvim-treesitter/nvim-treesitter",
 	    config = function()
 		require("nvim-treesitter.configs").setup({
@@ -60,9 +63,13 @@ require("lazy").setup({
 	    dependencies = { "nvim-lua/plenary.nvim" },
 	},
     })
+
 -- telescope keymaps
---vim.keymap.set("n", "<leader>fs", ":Telescope find_files<cr>")
---vim.keymap.set("n", "<leader>fg", ":Telescope live_grep<cr>")
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
 -- nvim tree keymaps
---vim.keymap.set("n", "<leader>e", ":NvimTreeFindFileToggle<cr>")
+--vim.keymap.set("n", "<leader>e", ":NvimTreeFindFileToggle<cr>")	-- TODO: FIX
